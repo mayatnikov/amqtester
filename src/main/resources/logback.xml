@@ -1,0 +1,31 @@
+<configuration>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <Pattern>%d{MM.dd HH:mm:ss.SSS} %-5p %c th:[%thread] - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+<!--  logger list -->
+    <logger name="org.springframework.boot" additivity="false">
+        <level value="WARN" />
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <logger name="ru.mvn.controller" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <logger name="ru.mvn.routes" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <root>
+        <level value="INFO" />
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</configuration>

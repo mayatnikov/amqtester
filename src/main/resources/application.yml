@@ -1,0 +1,21 @@
+spring:
+  main:
+    show-banner: true
+  activemq:
+#    broker-url: tcp://vm1:32768      
+#        broker-url: failover:(tcp://192.168.66.22:61616,tcp://192.168.66.26:61616)
+        broker-url: failover:(tcp://192.168.96.39:61616)
+server:
+    port: 8888
+    session-timeout: 5
+    tomcat:
+        uri-encoding: UTF-8
+        max-threads: 200
+my:
+   bufSize: 50
+   loop: 10
+   producer: true
+   consumer: true
+   producerMQ: activemq:hello
+   consumerMQ: activemq:hello?concurrentConsumers=5
+
