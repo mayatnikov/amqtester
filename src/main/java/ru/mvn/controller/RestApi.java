@@ -1,3 +1,4 @@
+
 package ru.mvn.controller;
 
 import org.apache.commons.logging.Log;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static ru.mvn.Application.thisApp;
 
 /**
  * Created with IntelliJ IDEA.

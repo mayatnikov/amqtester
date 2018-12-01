@@ -1,7 +1,11 @@
 package ru.mvn;
 
+import org.apache.camel.CamelContext;
+import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.camel.impl.DefaultShutdownStrategy;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -24,7 +28,7 @@ public class Application {
 
 @PostConstruct
   public void init() {
-           logger.info("Start app");
-}
+      logger.info("Start app");
+    }
 
 }

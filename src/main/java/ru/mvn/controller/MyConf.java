@@ -2,13 +2,19 @@ package ru.mvn.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerInitializedEvent;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,11 +24,16 @@ import java.net.UnknownHostException;
 
 @Component
 @ConfigurationProperties(prefix="my")
-public class MyConf implements ApplicationListener<EmbeddedServletContainerInitializedEvent> {
+public class MyConf implements ApplicationListener<EmbeddedServletContainerInitializedEvent>, ApplicationContextAware
+{
     String host_ip;
     int port;
     int bufSize;
     int loop;
+    List<String> clients;
+    List<String> operators;
+
+    List<String> mobiles;
 
     public int getLoop() {
         return loop;
@@ -44,25 +55,6 @@ public class MyConf implements ApplicationListener<EmbeddedServletContainerIniti
     private static Log L = LogFactory.getLog(MyConf.class);
     boolean producer;
     boolean consumer;
-    String producerMQ; //="activemq:hello";
-    String consumerMQ;  // ="activemq:hello?concurrentConsumers=100";
-
-
-    public String getProducerMQ() {
-        return producerMQ;
-    }
-
-    public void setProducerMQ(String producerMQ) {
-        this.producerMQ = producerMQ;
-    }
-
-    public String getConsumerMQ() {
-        return consumerMQ;
-    }
-
-    public void setConsumerMQ(String consumerMQ) {
-        this.consumerMQ = consumerMQ;
-    }
 
     public boolean isProducer() {
         return producer;
@@ -96,6 +88,39 @@ public class MyConf implements ApplicationListener<EmbeddedServletContainerIniti
         this.host_ip = host_ip;
     }
 
+    public List<String> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<String> clients) {
+        this.clients = clients;
+    }
+
+    public List<String> getOperators() {
+        return operators;
+    }
+
+    public void setOperators(List<String> operators) {
+        this.operators = operators;
+    }
+
+    public List<String> getMobiles() {
+        return mobiles;
+    }
+
+    public void setMobiles(List<String> mobiles) {
+        this.mobiles = mobiles;
+    }
+
+    @PostConstruct
+public void viewConfig() {
+        L.info("Operators:");
+        Arrays.stream(operators.toArray()).forEach(s -> L.info(s));
+        L.info("Clients:");
+        Arrays.stream(clients.toArray()).forEach(s -> L.info(s));
+
+
+}
 
     @Override
     public void onApplicationEvent(EmbeddedServletContainerInitializedEvent event) {
@@ -111,4 +136,20 @@ public class MyConf implements ApplicationListener<EmbeddedServletContainerIniti
         }
     }
 
+    static ApplicationContext appContext;
+    static MyConf myConf;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.appContext = applicationContext;
+        myConf  = this;
+    }
+
+    public static ApplicationContext getContext(){
+        return appContext;
+    }
+
+    public static MyConf getMyConf(){
+        return myConf;
+    }
 }

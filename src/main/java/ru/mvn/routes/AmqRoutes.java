@@ -42,7 +42,7 @@ public class AmqRoutes extends RouteBuilder {
 
         if (myConf.isProducer()) {
 
-            from("timer:hello?fixedRate=true&period=2000")
+            from("timer:amqtester?fixedRate=true&period={{msg-period}}")
                     .process((exchange) -> {
                         exchange.getOut().setHeader("JMSCorrelationID", "test-111-222-333");
                         exchange.getOut().setHeader("IPAddress", "111.222.333.444");
@@ -54,10 +54,10 @@ public class AmqRoutes extends RouteBuilder {
 
             from("seda:tmp1?concurrentConsumers=100")
                     .process( exchange ->  registrator.plusProducer() )
-                    .to(myConf.getProducerMQ());
+                    .to("{{producer-mq}}");
         }
         if (myConf.isConsumer()) {
-            from(myConf.getConsumerMQ())
+            from("{{consumer-mq}}")
             .process( exchange -> registrator.plusConsumer() )
             .log("Receive message size=${body.length}")
             ;
